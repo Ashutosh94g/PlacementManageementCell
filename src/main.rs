@@ -38,7 +38,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap(cors)
             .app_data(web::Data::new(app_state.clone()))
-        // .service(web::scope("/api").configure(handlers::config::config))
+            .service(web::scope("/api").configure(handlers::config::config))
     })
     .bind(("localhost", 8080))?
     .run()
