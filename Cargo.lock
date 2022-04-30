@@ -1544,6 +1544,7 @@ dependencies = [
  "dotenv",
  "entity",
  "migration",
+ "serde",
 ]
 
 [[package]]
