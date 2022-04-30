@@ -32,6 +32,34 @@ GET http://localhost:8080/api/category
 ### getcategorybyId
 GET http://localhost:8080/api/category/1
 
+// **************************family**************************
+
+### postfamily
+POST http://localhost:8080/api/family
+Content-Type: application/json
+
+{
+  "father_name": "NK",
+  "mother_name": "MR",
+  "father_occupation_id": 1,
+  "mother_occupation_id": 1,
+  "address": "Kathmandu",
+  "city": "Kathmandu",
+  "state": "Bagmati",
+  "zip": "444444",
+  "tenth_year": 2016,
+  "tenth_percentage": 88.88,
+  "tenth_board_id": 1,
+  "twelfth_year": 2018,
+  "twelfth_percentage": 74.6,
+  "twelfth_board_id": 1
+}
+
+### getfamilies
+GET http://localhost:8080/api/family
+
+### get_family_by_id
+GET http://localhost:8080/api/family/1
 
 // ********************Father_occupation**************************
 
