@@ -192,10 +192,10 @@ POST http://localhost:8080/api/student
 Content-Type: application/json
 
 {
-  "id": "12345",
+  "id": "12343",
   "personal_id": 1,
   "family_id": 1,
-  "pg_id": 1
+  "pg_id": null
 }
 
 ### getcategories

@@ -38,7 +38,7 @@ struct CStudent {
     pub id: String,
     // pub personal_id: i32,
     // pub family_id: i32,
-    // pub pg_id: Option<i32>,
+    pub pg_id: Option<i32>,
     pub firstname: String,
     pub lastname: String,
     pub email: String,
@@ -66,12 +66,6 @@ struct CStudent {
     pub twelfth_year: i32,
     pub twelfth_percentage: f32,
     pub twelfth_board_id: i32,
-
-    pub qualification_id: i32,
-    pub specialization_id: i32,
-    pub startyear: i32,
-    pub endyear: i32,
-    pub cgpa: f32,
 }
 
 #[get("/student")]
@@ -106,14 +100,9 @@ async fn get_students(state: web::Data<AppState>) -> impl Responder {
         .column(family::Column::TwelfthYear)
         .column(family::Column::TwelfthPercentage)
         .column(family::Column::TwelfthBoardId)
-        .column(pg::Column::QualificationId)
-        .column(pg::Column::SpecializationId)
-        .column(pg::Column::Startyear)
-        .column(pg::Column::Endyear)
-        .column(pg::Column::Cgpa)
+        .column(student::Column::PgId)
         .join(migration::JoinType::Join, student::Relation::Personal.def())
         .join(migration::JoinType::Join, student::Relation::Family.def())
-        .join(migration::JoinType::Join, student::Relation::Pg.def())
         .join(migration::JoinType::Join, personal::Relation::Gender.def())
         .join(
             migration::JoinType::Join,
@@ -144,6 +133,51 @@ async fn get_student_by_id(
 ) -> impl Responder {
     let db_connection = &state.db_connection;
     let student = Student::find_by_id(student_id.to_owned())
+        .select_only()
+        .column(student::Column::Id)
+        .column(personal::Column::Firstname)
+        .column(personal::Column::Lastname)
+        .column(personal::Column::Email)
+        .column(personal::Column::Phone)
+        .column(personal::Column::Dob)
+        .column_as(gender::Column::Value, "gender")
+        .column_as(category::Column::Value, "category")
+        .column(personal::Column::UgQualificationId)
+        .column(personal::Column::UgSpecializationId)
+        .column(personal::Column::UgStartyear)
+        .column(personal::Column::UgEndyear)
+        .column(personal::Column::UgCgpa)
+        .column(family::Column::FatherName)
+        .column(family::Column::MotherName)
+        .column_as(father_occupation::Column::Value, "father_occupation")
+        .column_as(mother_occupation::Column::Value, "mother_occupation")
+        .column(family::Column::Address)
+        .column(family::Column::City)
+        .column(family::Column::State)
+        .column(family::Column::Zip)
+        .column(family::Column::TenthYear)
+        .column(family::Column::TenthPercentage)
+        .column(family::Column::TenthBoardId)
+        .column(family::Column::TwelfthYear)
+        .column(family::Column::TwelfthPercentage)
+        .column(family::Column::TwelfthBoardId)
+        .column(student::Column::PgId)
+        .join(migration::JoinType::Join, student::Relation::Personal.def())
+        .join(migration::JoinType::Join, student::Relation::Family.def())
+        .join(migration::JoinType::Join, personal::Relation::Gender.def())
+        .join(
+            migration::JoinType::Join,
+            personal::Relation::Category.def(),
+        )
+        .join(
+            migration::JoinType::Join,
+            family::Relation::FatherOccupation.def(),
+        )
+        .join(
+            migration::JoinType::Join,
+            family::Relation::MotherOccupation.def(),
+        )
+        .into_model::<CStudent>()
         .one(db_connection)
         .await;
 
