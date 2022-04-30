@@ -107,6 +107,32 @@ GET http://localhost:8080/api/mother_occupation
 ### getmotheroccupationbyId
 GET http://localhost:8080/api/mother_occupation/1
 
+// ********************Pesonal*************************
+### postpersonal
+POST http://localhost:8080/api/personal
+Content-Type: application/json
+
+{
+  "firstname": "Nabin",
+  "lastname": "Karki",
+  "email": "nabin@karki.com",
+  "phone": "9876543210",
+  "dob": "2018-01-01",
+  "gender_id": 1,
+  "category_id": 1,
+  "ug_qualification_id": 1,
+  "ug_specialization_id": 1,
+  "ug_startyear": 2018,
+  "ug_endyear": 2022,
+  "ug_cgpa": 7.78
+}
+
+### getpersonals
+GET http://localhost:8080/api/personal
+
+### getpersonalbyId
+GET http://localhost:8080/api/personal/1
+
 // ********************Qualification**************************
 
 ### postqualification
