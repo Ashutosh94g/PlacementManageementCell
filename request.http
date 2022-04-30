@@ -1,0 +1,119 @@
+/// *************************Board*************************
+
+### postboard
+POST http://localhost:8080/api/board
+Content-Type: application/json
+
+{
+  "id": 1,
+  "value": "CBSE"
+}
+
+### getboards
+GET http://localhost:8080/api/board
+
+### getboardByID
+GET http://localhost:8080/api/board/1
+
+// **************************Category**************************
+
+### postcategory
+POST http://localhost:8080/api/category
+Content-Type: application/json
+
+{
+  "id": 1,
+  "value": "General"
+}
+
+### getcategories
+GET http://localhost:8080/api/category
+
+### getcategorybyId
+GET http://localhost:8080/api/category/1
+
+
+// ********************Father_occupation**************************
+
+### postfatheroccupation
+POST http://localhost:8080/api/father_occupation
+Content-Type: application/json
+
+{
+  "id": 1,
+  "value": "Bussiness"
+}
+
+### getcategories
+GET http://localhost:8080/api/father_occupation
+
+### getfatheroccupationbyId
+GET http://localhost:8080/api/father_occupation/1
+
+// ********************Gender*************************
+
+### postgender
+POST http://localhost:8080/api/gender
+Content-Type: application/json
+
+{
+  "id": 1,
+  "value": "Female"
+}
+
+### getgenders
+GET http://localhost:8080/api/gender
+
+### getgenderByID
+GET http://localhost:8080/api/gender/1
+
+// ********************Mother_occupation**************************
+
+### postmotheroccupation
+POST http://localhost:8080/api/mother_occupation
+Content-Type: application/json
+
+{
+  "id": 1,
+  "value": "Teacher"
+}
+
+### getcategories
+GET http://localhost:8080/api/mother_occupation
+
+### getmotheroccupationbyId
+GET http://localhost:8080/api/mother_occupation/1
+
+// ********************Qualification**************************
+
+### postqualification
+POST http://localhost:8080/api/qualification
+Content-Type: application/json
+
+{
+  "id": 1,
+  "value": "B.Tech"
+}
+
+### getcategories
+GET http://localhost:8080/api/qualification
+
+### getqualificationbyId
+GET http://localhost:8080/api/qualification/1
+
+// ********************Specialization**************************
+
+### postspecialization
+POST http://localhost:8080/api/specialization
+Content-Type: application/json
+
+{
+  "id": 1,
+  "value": "CSE"
+}
+
+### getcategories
+GET http://localhost:8080/api/specialization
+
+### getspecializationbyId
+GET http://localhost:8080/api/specialization/1
