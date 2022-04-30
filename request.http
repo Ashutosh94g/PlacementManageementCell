@@ -184,3 +184,22 @@ GET http://localhost:8080/api/specialization
 
 ### getspecializationbyId
 GET http://localhost:8080/api/specialization/1
+
+// ********************Student*************************
+
+### poststudent
+POST http://localhost:8080/api/student
+Content-Type: application/json
+
+{
+  "id": "12345",
+  "personal_id": 1,
+  "family_id": 1,
+  "pg_id": 1
+}
+
+### getcategories
+GET http://localhost:8080/api/student
+
+### getstudentbyId
+GET http://localhost:8080/api/student/12345
