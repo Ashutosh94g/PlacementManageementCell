@@ -5,7 +5,6 @@ POST http://localhost:8080/api/board
 Content-Type: application/json
 
 {
-  "id": 1,
   "value": "CBSE"
 }
 
@@ -22,15 +21,14 @@ POST http://localhost:8080/api/category
 Content-Type: application/json
 
 {
-  "id": 1,
-  "value": "General"
+  "value": "SC"
 }
 
 ### getcategories
 GET http://localhost:8080/api/category
 
 ### getcategorybyId
-GET http://localhost:8080/api/category/1
+GET http://localhost:8080/api/category/2
 
 // **************************family**************************
 
@@ -68,7 +66,6 @@ POST http://localhost:8080/api/father_occupation
 Content-Type: application/json
 
 {
-  "id": 1,
   "value": "Bussiness"
 }
 
@@ -85,7 +82,6 @@ POST http://localhost:8080/api/gender
 Content-Type: application/json
 
 {
-  "id": 1,
   "value": "Female"
 }
 
@@ -102,7 +98,6 @@ POST http://localhost:8080/api/mother_occupation
 Content-Type: application/json
 
 {
-  "id": 1,
   "value": "Teacher"
 }
 
@@ -119,7 +114,6 @@ POST http://localhost:8080/api/qualification
 Content-Type: application/json
 
 {
-  "id": 1,
   "value": "B.Tech"
 }
 
@@ -136,7 +130,6 @@ POST http://localhost:8080/api/specialization
 Content-Type: application/json
 
 {
-  "id": 1,
   "value": "CSE"
 }
 

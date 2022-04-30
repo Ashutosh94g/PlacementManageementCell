@@ -1,5 +1,6 @@
 use actix_web::{get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Board;
+use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
 use entity::{entity::board, sea_orm::Set};
 
@@ -9,7 +10,7 @@ use crate::AppState;
 async fn post_board(info: web::Json<board::Model>, state: web::Data<AppState>) -> impl Responder {
     let db_connection = &state.db_connection;
     let board_model = board::ActiveModel {
-        id: Set(info.id.to_owned()),
+        id: NotSet,
         value: Set(info.value.to_owned()),
     };
 

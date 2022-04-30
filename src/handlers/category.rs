@@ -1,5 +1,6 @@
 use actix_web::{get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Category;
+use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
 use entity::{entity::category, sea_orm::Set};
 
@@ -12,7 +13,7 @@ async fn post_category(
 ) -> impl Responder {
     let db_connection = &state.db_connection;
     let category_model = category::ActiveModel {
-        id: Set(info.id.to_owned()),
+        id: NotSet,
         value: Set(info.value.to_owned()),
     };
 

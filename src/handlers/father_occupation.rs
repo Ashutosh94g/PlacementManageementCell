@@ -1,5 +1,6 @@
 use actix_web::{get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::FatherOccupation;
+use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
 use entity::{entity::father_occupation, sea_orm::Set};
 
@@ -12,7 +13,7 @@ async fn post_father_occupation(
 ) -> impl Responder {
     let db_connection = &state.db_connection;
     let father_occupation_model = father_occupation::ActiveModel {
-        id: Set(info.id.to_owned()),
+        id: NotSet,
         value: Set(info.value.to_owned()),
     };
 

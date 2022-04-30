@@ -1,5 +1,6 @@
 use actix_web::{get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Family;
+use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
 use entity::{entity::family, sea_orm::Set};
 
@@ -9,7 +10,7 @@ use crate::AppState;
 async fn post_family(info: web::Json<family::Model>, state: web::Data<AppState>) -> impl Responder {
     let db_connection = &state.db_connection;
     let family_model = family::ActiveModel {
-        id: entity::sea_orm::ActiveValue::NotSet,
+        id: NotSet,
         father_name: Set(info.father_name.to_owned()),
         mother_name: Set(info.mother_name.to_owned()),
         father_occupation_id: Set(info.father_occupation_id.to_owned()),
