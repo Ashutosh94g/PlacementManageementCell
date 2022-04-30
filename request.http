@@ -133,6 +133,26 @@ GET http://localhost:8080/api/personal
 ### getpersonalbyId
 GET http://localhost:8080/api/personal/1
 
+// ********************PG *************************
+
+### postpg
+POST http://localhost:8080/api/pg
+Content-Type: application/json
+
+{
+  "qualification_id": 2,
+  "specialization_id": 2,
+  "startyear": 2023,
+  "endyear": 2025,
+  "cgpa": 8
+}
+
+### getcategories
+GET http://localhost:8080/api/pg
+
+### getpgbyId
+GET http://localhost:8080/api/pg/1
+
 // ********************Qualification**************************
 
 ### postqualification
@@ -140,7 +160,7 @@ POST http://localhost:8080/api/qualification
 Content-Type: application/json
 
 {
-  "value": "B.Tech"
+  "value": "MBA"
 }
 
 ### getcategories
@@ -156,7 +176,7 @@ POST http://localhost:8080/api/specialization
 Content-Type: application/json
 
 {
-  "value": "CSE"
+  "value": "General"
 }
 
 ### getcategories
