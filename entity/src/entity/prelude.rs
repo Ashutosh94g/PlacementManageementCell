@@ -12,3 +12,4 @@ pub use super::qualification::Entity as Qualification;
 pub use super::seaql_migrations::Entity as SeaqlMigrations;
 pub use super::specialization::Entity as Specialization;
 pub use super::student::Entity as Student;
+pub use super::teacher::Entity as Teacher;

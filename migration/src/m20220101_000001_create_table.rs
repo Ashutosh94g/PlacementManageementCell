@@ -340,6 +340,31 @@ impl MigrationTrait for Migration {
             )
             .await?;
 
+        #[derive(Iden)]
+        pub enum Teacher {
+            Table,
+            Id,
+            Email,
+            Password,
+        }
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(Teacher::Table)
+                    .if_not_exists()
+                    .col(
+                        ColumnDef::new(Teacher::Id)
+                            .integer()
+                            .primary_key()
+                            .auto_increment(),
+                    )
+                    .col(ColumnDef::new(Teacher::Email).string().not_null())
+                    .col(ColumnDef::new(Teacher::Password).string().not_null())
+                    .to_owned(),
+            )
+            .await?;
+
         manager
             .create_foreign_key(
                 ForeignKey::create()

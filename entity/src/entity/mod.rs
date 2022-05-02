@@ -14,3 +14,4 @@ pub mod qualification;
 pub mod seaql_migrations;
 pub mod specialization;
 pub mod student;
+pub mod teacher;

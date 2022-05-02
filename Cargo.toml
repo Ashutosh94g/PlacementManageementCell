@@ -10,6 +10,7 @@ actix-cors = "0.6.1"
 actix-web = "4.0.1"
 dotenv = "0.15.0"
 entity = {path = "entity"}
+jsonwebtoken = "8.1.0"
 migration = {path = "migration"}
 serde = { version = "1.0.136", features = ["derive"] }
 
