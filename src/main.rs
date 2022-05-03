@@ -5,6 +5,8 @@ use actix_web::{http, web, App, HttpServer};
 use entity::sea_orm::{Database, DatabaseConnection};
 
 mod handlers;
+mod middlewares;
+mod utils;
 
 #[derive(Debug, Clone)]
 pub struct AppState {
@@ -36,6 +38,7 @@ async fn main() -> std::io::Result<()> {
             .allowed_header(http::header::CONTENT_TYPE);
 
         App::new()
+            .wrap(middlewares::auth::Auth)
             .wrap(cors)
             .app_data(web::Data::new(app_state.clone()))
             .service(web::scope("/api").configure(handlers::config::config))

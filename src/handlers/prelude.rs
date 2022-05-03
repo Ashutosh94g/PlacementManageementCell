@@ -10,3 +10,4 @@ pub use super::pg::{self, *};
 pub use super::qualification::{self, *};
 pub use super::specialization::{self, *};
 pub use super::student::{self, *};
+pub use super::teacher::{self, *};

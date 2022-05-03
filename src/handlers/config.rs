@@ -13,4 +13,5 @@ pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.configure(qualification::config);
     cfg.configure(specialization::config);
     cfg.configure(student::config);
+    cfg.configure(teacher::config);
 }

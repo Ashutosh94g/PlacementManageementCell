@@ -2,6 +2,7 @@
 
 ### postboard
 POST http://localhost:8080/api/board
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {
@@ -10,6 +11,7 @@ Content-Type: application/json
 
 ### getboards
 GET http://localhost:8080/api/board
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 
 ### getboardByID
 GET http://localhost:8080/api/board/1
@@ -203,3 +205,23 @@ GET http://localhost:8080/api/student
 
 ### getstudentbyId
 GET http://localhost:8080/api/student/12345
+
+
+// ******************** register *************************
+### register 
+POST http://localhost:8080/api/register
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test"
+}
+
+### login
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test"
+}

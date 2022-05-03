@@ -12,3 +12,4 @@ pub mod pg;
 pub mod qualification;
 pub mod specialization;
 pub mod student;
+pub mod teacher;
