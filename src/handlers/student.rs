@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, Either, HttpResponse, Responder};
+use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 
 use entity::sea_orm::prelude::ChronoDate;
 use entity::sea_orm::{self, EntityTrait, FromQueryResult, QuerySelect, RelationTrait};
@@ -187,8 +187,25 @@ async fn get_student_by_id(
     }
 }
 
+#[delete("/student/{id}")]
+async fn delete_student_by_id(
+    student_id: web::Path<String>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let student = Student::delete_by_id(student_id.to_owned())
+        .exec(db_connection)
+        .await;
+
+    match student {
+        Ok(student) => Either::Left(HttpResponse::Ok().json(student.rows_affected)),
+        Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
+    }
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_student)
         .service(get_students)
-        .service(get_student_by_id);
+        .service(get_student_by_id)
+        .service(delete_student_by_id);
 }

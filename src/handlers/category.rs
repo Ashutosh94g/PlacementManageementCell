@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, Either, HttpResponse, Responder};
+use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Category;
 use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
@@ -54,8 +54,25 @@ async fn get_category_by_id(
     }
 }
 
+#[delete("/category/{id}")]
+async fn delete_category_by_id(
+    category_id: web::Path<i32>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let category = Category::delete_by_id(category_id.to_owned())
+        .exec(db_connection)
+        .await;
+
+    match category {
+        Ok(category) => Either::Left(HttpResponse::Ok().json(category.rows_affected)),
+        Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
+    }
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_category)
         .service(get_categorys)
-        .service(get_category_by_id);
+        .service(get_category_by_id)
+        .service(delete_category_by_id);
 }

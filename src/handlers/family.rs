@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, Either, HttpResponse, Responder};
+use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Family;
 use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
@@ -61,8 +61,25 @@ async fn get_family_by_id(family_id: web::Path<i32>, state: web::Data<AppState>)
     }
 }
 
+#[delete("/family/{id}")]
+async fn delete_family_by_id(
+    family_id: web::Path<i32>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let family = Family::delete_by_id(family_id.to_owned())
+        .exec(db_connection)
+        .await;
+
+    match family {
+        Ok(family) => Either::Left(HttpResponse::Ok().json(family.rows_affected)),
+        Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
+    }
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_family)
         .service(get_familys)
-        .service(get_family_by_id);
+        .service(get_family_by_id)
+        .service(delete_family_by_id);
 }

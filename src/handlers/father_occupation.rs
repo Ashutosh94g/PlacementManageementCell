@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, Either, HttpResponse, Responder};
+use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::FatherOccupation;
 use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
@@ -54,8 +54,27 @@ async fn get_father_occupation_by_id(
     }
 }
 
+#[delete("/father_occupation/{id}")]
+async fn delete_father_occupation_by_id(
+    father_occupation_id: web::Path<i32>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let father_occupation = FatherOccupation::delete_by_id(father_occupation_id.to_owned())
+        .exec(db_connection)
+        .await;
+
+    match father_occupation {
+        Ok(father_occupation) => {
+            Either::Left(HttpResponse::Ok().json(father_occupation.rows_affected))
+        }
+        Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
+    }
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_father_occupation)
         .service(get_father_occupations)
-        .service(get_father_occupation_by_id);
+        .service(get_father_occupation_by_id)
+        .service(delete_father_occupation_by_id);
 }

@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, Either, HttpResponse, Responder};
+use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Personal;
 use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
@@ -65,8 +65,25 @@ async fn get_personal_by_id(
     }
 }
 
+#[delete("/personal/{id}")]
+async fn delete_personal_by_id(
+    personal_id: web::Path<i32>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let personal = Personal::delete_by_id(personal_id.to_owned())
+        .exec(db_connection)
+        .await;
+
+    match personal {
+        Ok(personal) => Either::Left(HttpResponse::Ok().json(personal.rows_affected)),
+        Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
+    }
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_personal)
         .service(get_personals)
-        .service(get_personal_by_id);
+        .service(get_personal_by_id)
+        .service(delete_personal_by_id);
 }

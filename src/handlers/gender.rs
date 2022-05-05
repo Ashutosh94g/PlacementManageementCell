@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, Either, HttpResponse, Responder};
+use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Gender;
 use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
@@ -48,8 +48,25 @@ async fn get_gender_by_id(gender_id: web::Path<i32>, state: web::Data<AppState>)
     }
 }
 
+#[delete("/gender/{id}")]
+async fn delete_gender_by_id(
+    gender_id: web::Path<i32>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let gender = Gender::delete_by_id(gender_id.to_owned())
+        .exec(db_connection)
+        .await;
+
+    match gender {
+        Ok(gender) => Either::Left(HttpResponse::Ok().json(gender.rows_affected)),
+        Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
+    }
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_gender)
         .service(get_genders)
-        .service(get_gender_by_id);
+        .service(get_gender_by_id)
+        .service(delete_gender_by_id);
 }

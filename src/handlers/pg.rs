@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, Either, HttpResponse, Responder};
+use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Pg;
 use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
@@ -50,6 +50,20 @@ async fn get_pg_by_id(pg_id: web::Path<i32>, state: web::Data<AppState>) -> impl
     }
 }
 
+#[delete("/pg/{id}")]
+async fn delete_pg_by_id(pg_id: web::Path<i32>, state: web::Data<AppState>) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let pg = Pg::delete_by_id(pg_id.to_owned()).exec(db_connection).await;
+
+    match pg {
+        Ok(pg) => Either::Left(HttpResponse::Ok().json(pg.rows_affected)),
+        Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
+    }
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(post_pg).service(get_pgs).service(get_pg_by_id);
+    cfg.service(post_pg)
+        .service(get_pgs)
+        .service(get_pg_by_id)
+        .service(delete_pg_by_id);
 }

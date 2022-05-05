@@ -16,6 +16,11 @@ Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4M
 ### getboardByID
 GET http://localhost:8080/api/board/1
 
+### deletebyid
+DELETE http://localhost:8080/api/board/1
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
+
+
 // **************************Category**************************
 
 ### postcategory

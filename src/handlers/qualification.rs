@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, Either, HttpResponse, Responder};
+use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Qualification;
 use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
@@ -54,8 +54,25 @@ async fn get_qualification_by_id(
     }
 }
 
+#[delete("/qualification/{id}")]
+async fn delete_qualification_by_id(
+    qualification_id: web::Path<i32>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let qualification = Qualification::delete_by_id(qualification_id.to_owned())
+        .exec(db_connection)
+        .await;
+
+    match qualification {
+        Ok(qualification) => Either::Left(HttpResponse::Ok().json(qualification.rows_affected)),
+        Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
+    }
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_qualification)
         .service(get_qualifications)
-        .service(get_qualification_by_id);
+        .service(get_qualification_by_id)
+        .service(delete_qualification_by_id);
 }

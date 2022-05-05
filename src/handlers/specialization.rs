@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, Either, HttpResponse, Responder};
+use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Specialization;
 use entity::sea_orm::ActiveValue::NotSet;
 use entity::sea_orm::EntityTrait;
@@ -54,8 +54,25 @@ async fn get_specialization_by_id(
     }
 }
 
+#[delete("/specialization/{id}")]
+async fn delete_specialization_by_id(
+    specialization_id: web::Path<i32>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let specialization = Specialization::delete_by_id(specialization_id.to_owned())
+        .exec(db_connection)
+        .await;
+
+    match specialization {
+        Ok(specialization) => Either::Left(HttpResponse::Ok().json(specialization.rows_affected)),
+        Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
+    }
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_specialization)
         .service(get_specializations)
-        .service(get_specialization_by_id);
+        .service(get_specialization_by_id)
+        .service(delete_specialization_by_id);
 }

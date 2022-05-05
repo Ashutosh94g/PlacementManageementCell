@@ -1,7 +1,7 @@
-use actix_web::{post, web, Either, HttpResponse, Responder};
+use actix_web::{delete, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Teacher;
 use entity::sea_orm::ActiveValue::NotSet;
-use entity::sea_orm::{ColumnTrait, EntityTrait, QueryFilter};
+use entity::sea_orm::{ColumnTrait, EntityTrait, ModelTrait, QueryFilter};
 use entity::{entity::teacher, sea_orm::Set};
 
 use crate::utils::{compare_hash, create_hash, create_jwt};
@@ -53,33 +53,28 @@ async fn login(info: web::Json<teacher::Model>, state: web::Data<AppState>) -> i
     return HttpResponse::Unauthorized().json("Unauthorized");
 }
 
-// #[get("/teacher")]
-// async fn get_teachers(state: web::Data<AppState>) -> impl Responder {
-//     let db_connection = &state.db_connection;
-//     let teachers = Teacher::find().all(db_connection).await;
+#[delete("/teacher")]
+async fn delete_teacher(email: web::Json<String>, state: web::Data<AppState>) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let teacher = Teacher::find()
+        .filter(teacher::Column::Email.eq(email.to_owned()))
+        .one(db_connection)
+        .await;
 
-//     match teachers {
-//         Ok(teachers) => Either::Left(HttpResponse::Ok().json(teachers)),
-//         Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
-//     }
-// }
+    let teacher = teacher
+        .expect("Failed due to error in unwraping model")
+        .expect("Failed due to error in unwraping model");
 
-// #[get("/teacher/{id}")]
-// async fn get_teacher_by_id(
-//     teacher_id: web::Path<i32>,
-//     state: web::Data<AppState>,
-// ) -> impl Responder {
-//     let db_connection = &state.db_connection;
-//     let teacher = Teacher::find_by_id(teacher_id.to_owned())
-//         .one(db_connection)
-//         .await;
+    let result = teacher.delete(db_connection).await;
 
-//     match teacher {
-//         Ok(teacher) => Either::Left(HttpResponse::Ok().json(teacher)),
-//         Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
-//     }
-// }
+    match result {
+        Ok(teacher) => Either::Left(HttpResponse::Ok().json(teacher.rows_affected)),
+        Err(error) => Either::Right(HttpResponse::BadRequest().json(error.to_string())),
+    }
+}
 
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(post_teacher).service(login);
+    cfg.service(post_teacher)
+        .service(login)
+        .service(delete_teacher);
 }
