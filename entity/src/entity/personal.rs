@@ -11,7 +11,9 @@ pub struct Model {
     pub id: i32,
     pub firstname: String,
     pub lastname: String,
+    #[sea_orm(unique)]
     pub email: String,
+    #[sea_orm(unique)]
     pub phone: String,
     pub dob: Date,
     pub gender_id: i32,

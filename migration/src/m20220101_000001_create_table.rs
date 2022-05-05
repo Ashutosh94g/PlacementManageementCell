@@ -42,8 +42,18 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(Personal::Firstname).string().not_null())
                     .col(ColumnDef::new(Personal::Lastname).string().not_null())
-                    .col(ColumnDef::new(Personal::Email).string().not_null())
-                    .col(ColumnDef::new(Personal::Phone).string().not_null())
+                    .col(
+                        ColumnDef::new(Personal::Email)
+                            .string()
+                            .unique_key()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Personal::Phone)
+                            .string()
+                            .unique_key()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Personal::Dob).date().not_null())
                     .col(ColumnDef::new(Personal::GenderId).integer().not_null())
                     .col(ColumnDef::new(Personal::CategoryId).integer().not_null())
@@ -197,7 +207,12 @@ impl MigrationTrait for Migration {
                             .primary_key()
                             .auto_increment(),
                     )
-                    .col(ColumnDef::new(Gender::Value).string().not_null())
+                    .col(
+                        ColumnDef::new(Gender::Value)
+                            .string()
+                            .unique_key()
+                            .not_null(),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -220,7 +235,12 @@ impl MigrationTrait for Migration {
                             .primary_key()
                             .auto_increment(),
                     )
-                    .col(ColumnDef::new(Category::Value).string().not_null())
+                    .col(
+                        ColumnDef::new(Category::Value)
+                            .string()
+                            .unique_key()
+                            .not_null(),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -243,7 +263,12 @@ impl MigrationTrait for Migration {
                             .primary_key()
                             .auto_increment(),
                     )
-                    .col(ColumnDef::new(Qualification::Value).string().not_null())
+                    .col(
+                        ColumnDef::new(Qualification::Value)
+                            .string()
+                            .unique_key()
+                            .not_null(),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -266,7 +291,12 @@ impl MigrationTrait for Migration {
                             .primary_key()
                             .auto_increment(),
                     )
-                    .col(ColumnDef::new(Specialization::Value).string().not_null())
+                    .col(
+                        ColumnDef::new(Specialization::Value)
+                            .string()
+                            .unique_key()
+                            .not_null(),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -289,7 +319,12 @@ impl MigrationTrait for Migration {
                             .primary_key()
                             .auto_increment(),
                     )
-                    .col(ColumnDef::new(FatherOccupation::Value).string().not_null())
+                    .col(
+                        ColumnDef::new(FatherOccupation::Value)
+                            .string()
+                            .unique_key()
+                            .not_null(),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -312,7 +347,12 @@ impl MigrationTrait for Migration {
                             .primary_key()
                             .auto_increment(),
                     )
-                    .col(ColumnDef::new(MotherOccupation::Value).string().not_null())
+                    .col(
+                        ColumnDef::new(MotherOccupation::Value)
+                            .string()
+                            .unique_key()
+                            .not_null(),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -335,7 +375,12 @@ impl MigrationTrait for Migration {
                             .primary_key()
                             .auto_increment(),
                     )
-                    .col(ColumnDef::new(Board::Value).string().not_null())
+                    .col(
+                        ColumnDef::new(Board::Value)
+                            .string()
+                            .unique_key()
+                            .not_null(),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -359,7 +404,12 @@ impl MigrationTrait for Migration {
                             .primary_key()
                             .auto_increment(),
                     )
-                    .col(ColumnDef::new(Teacher::Email).string().not_null())
+                    .col(
+                        ColumnDef::new(Teacher::Email)
+                            .unique_key()
+                            .string()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Teacher::Password).string().not_null())
                     .to_owned(),
             )

@@ -9,6 +9,7 @@ pub struct Model {
     #[sea_orm(primary_key)]
     #[serde(skip_deserializing)]
     pub id: i32,
+    #[sea_orm(unique)]
     pub email: String,
     pub password: String,
 }
