@@ -18,7 +18,6 @@ pub fn create_hash(password: String) -> String {
     let bsalt = salt.as_bytes();
     let config = Config::default();
     let hash = argon2::hash_encoded(&password, &bsalt, &config).unwrap();
-    println!("{:?}", hash);
 
     hash
 }
