@@ -1,7 +1,9 @@
 use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 
 use entity::sea_orm::prelude::ChronoDate;
-use entity::sea_orm::{self, EntityTrait, FromQueryResult, QuerySelect, RelationTrait};
+use entity::sea_orm::{
+    self, ActiveModelTrait, EntityTrait, FromQueryResult, QuerySelect, RelationTrait,
+};
 use entity::{
     entity::{prelude::*, *},
     sea_orm::Set,
@@ -30,6 +32,35 @@ async fn post_student(
     match result {
         Ok(model) => Either::Left(HttpResponse::Ok().json(model)),
         Err(error) => Either::Right(HttpResponse::InternalServerError().json(error.to_string())),
+    }
+}
+
+#[post("/student/{id}")]
+async fn update_student(
+    id: web::Path<String>,
+    info: web::Json<student::Model>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let student = Student::find_by_id(id.into_inner())
+        .one(db_connection)
+        .await;
+    if let Ok(student) = student {
+        if let Some(student) = student {
+            let mut student_model: student::ActiveModel = student.into();
+            student_model.personal_id = Set(info.personal_id.to_owned());
+            student_model.family_id = Set(info.family_id.to_owned());
+            student_model.pg_id = Set(info.pg_id.to_owned());
+            let result = student_model.update(db_connection).await;
+            match result {
+                Ok(model) => return HttpResponse::Ok().json(model),
+                Err(error) => return HttpResponse::InternalServerError().json(error.to_string()),
+            };
+        } else {
+            return HttpResponse::NotFound().json("student not found");
+        }
+    } else {
+        return HttpResponse::NotFound().json("student not found");
     }
 }
 
@@ -205,6 +236,7 @@ async fn delete_student_by_id(
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_student)
+        .service(update_student)
         .service(get_students)
         .service(get_student_by_id)
         .service(delete_student_by_id);

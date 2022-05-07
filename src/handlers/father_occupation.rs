@@ -1,7 +1,7 @@
 use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::FatherOccupation;
 use entity::sea_orm::ActiveValue::NotSet;
-use entity::sea_orm::EntityTrait;
+use entity::sea_orm::{ActiveModelTrait, EntityTrait};
 use entity::{entity::father_occupation, sea_orm::Set};
 
 use crate::AppState;
@@ -24,6 +24,34 @@ async fn post_father_occupation(
     match result {
         Ok(model) => Either::Left(HttpResponse::Ok().json(model)),
         Err(error) => Either::Right(HttpResponse::InternalServerError().json(error.to_string())),
+    }
+}
+
+#[post("/father_occupation/{id}")]
+async fn update_father_occupation(
+    id: web::Path<i32>,
+    info: web::Json<father_occupation::Model>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let father_occupation = FatherOccupation::find_by_id(id.into_inner())
+        .one(db_connection)
+        .await;
+    if let Ok(father_occupation) = father_occupation {
+        if let Some(father_occupation) = father_occupation {
+            let mut father_occupation_model: father_occupation::ActiveModel =
+                father_occupation.into();
+            father_occupation_model.value = Set(info.value.to_owned());
+            let result = father_occupation_model.update(db_connection).await;
+            match result {
+                Ok(model) => return HttpResponse::Ok().json(model),
+                Err(error) => return HttpResponse::InternalServerError().json(error.to_string()),
+            };
+        } else {
+            return HttpResponse::NotFound().json("father_occupation not found");
+        }
+    } else {
+        return HttpResponse::NotFound().json("father_occupation not found");
     }
 }
 
@@ -74,6 +102,7 @@ async fn delete_father_occupation_by_id(
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_father_occupation)
+        .service(update_father_occupation)
         .service(get_father_occupations)
         .service(get_father_occupation_by_id)
         .service(delete_father_occupation_by_id);

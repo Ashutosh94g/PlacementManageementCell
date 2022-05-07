@@ -1,12 +1,12 @@
 /// *************************Board*************************
 
 ### postboard
-POST http://localhost:8080/api/board
+POST http://localhost:8080/api/board/1
 Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {
-  "value": "CBSE"
+  "value": "ICSE"
 }
 
 ### getboards
@@ -41,6 +41,7 @@ GET http://localhost:8080/api/category/2
 
 ### postfamily
 POST http://localhost:8080/api/family
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {
@@ -54,14 +55,38 @@ Content-Type: application/json
   "zip": "444444",
   "tenth_year": 2016,
   "tenth_percentage": 88.88,
-  "tenth_board_id": 1,
+  "tenth_board_id": 2,
   "twelfth_year": 2018,
   "twelfth_percentage": 74.6,
-  "twelfth_board_id": 1
+  "twelfth_board_id": 2
+}
+
+### updatefamily
+POST http://localhost:8080/api/family/2
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
+Content-Type: application/json
+
+{
+  "father_name": "NK",
+  "mother_name": "MR",
+  "father_occupation_id": 1,
+  "mother_occupation_id": 1,
+  "address": "Ludhiana",
+  "city": "Ludhiana",
+  "state": "Punjab",
+  "zip": "444444",
+  "tenth_year": 2016,
+  "tenth_percentage": 88.88,
+  "tenth_board_id": 2,
+  "twelfth_year": 2018,
+  "twelfth_percentage": 74.6,
+  "twelfth_board_id": 2
 }
 
 ### getfamilies
 GET http://localhost:8080/api/family
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
+
 
 ### get_family_by_id
 GET http://localhost:8080/api/family/1
@@ -70,6 +95,7 @@ GET http://localhost:8080/api/family/1
 
 ### postfatheroccupation
 POST http://localhost:8080/api/father_occupation
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {
@@ -86,6 +112,7 @@ GET http://localhost:8080/api/father_occupation/1
 
 ### postgender
 POST http://localhost:8080/api/gender
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {
@@ -102,6 +129,7 @@ GET http://localhost:8080/api/gender/1
 
 ### postmotheroccupation
 POST http://localhost:8080/api/mother_occupation
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {

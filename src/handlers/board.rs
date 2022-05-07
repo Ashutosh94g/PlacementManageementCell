@@ -1,7 +1,7 @@
 use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Board;
 use entity::sea_orm::ActiveValue::NotSet;
-use entity::sea_orm::EntityTrait;
+use entity::sea_orm::{ActiveModelTrait, EntityTrait};
 use entity::{entity::board, sea_orm::Set};
 
 use crate::AppState;
@@ -21,6 +21,31 @@ async fn post_board(info: web::Json<board::Model>, state: web::Data<AppState>) -
     match result {
         Ok(model) => Either::Left(HttpResponse::Ok().json(model)),
         Err(error) => Either::Right(HttpResponse::InternalServerError().json(error.to_string())),
+    }
+}
+
+#[post("/board/{id}")]
+async fn update_board(
+    id: web::Path<i32>,
+    info: web::Json<board::Model>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let board = Board::find_by_id(id.into_inner()).one(db_connection).await;
+    if let Ok(board) = board {
+        if let Some(board) = board {
+            let mut board_model: board::ActiveModel = board.into();
+            board_model.value = Set(info.value.to_owned());
+            let result = board_model.update(db_connection).await;
+            match result {
+                Ok(model) => return HttpResponse::Ok().json(model),
+                Err(error) => return HttpResponse::InternalServerError().json(error.to_string()),
+            };
+        } else {
+            return HttpResponse::NotFound().json("Board not found");
+        }
+    } else {
+        return HttpResponse::NotFound().json("Board not found");
     }
 }
 
@@ -67,6 +92,7 @@ async fn delete_board_by_id(
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_board)
         .service(get_boards)
+        .service(update_board)
         .service(get_board_by_id)
         .service(delete_board_by_id);
 }

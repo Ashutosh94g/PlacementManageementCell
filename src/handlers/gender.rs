@@ -1,7 +1,7 @@
 use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Gender;
 use entity::sea_orm::ActiveValue::NotSet;
-use entity::sea_orm::EntityTrait;
+use entity::sea_orm::{ActiveModelTrait, EntityTrait};
 use entity::{entity::gender, sea_orm::Set};
 
 use crate::AppState;
@@ -21,6 +21,31 @@ async fn post_gender(info: web::Json<gender::Model>, state: web::Data<AppState>)
     match result {
         Ok(model) => Either::Left(HttpResponse::Ok().json(model)),
         Err(error) => Either::Right(HttpResponse::InternalServerError().json(error.to_string())),
+    }
+}
+
+#[post("/gender/{id}")]
+async fn update_gender(
+    id: web::Path<i32>,
+    info: web::Json<gender::Model>,
+    state: web::Data<AppState>,
+) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let gender = Gender::find_by_id(id.into_inner()).one(db_connection).await;
+    if let Ok(gender) = gender {
+        if let Some(gender) = gender {
+            let mut gender_model: gender::ActiveModel = gender.into();
+            gender_model.value = Set(info.value.to_owned());
+            let result = gender_model.update(db_connection).await;
+            match result {
+                Ok(model) => return HttpResponse::Ok().json(model),
+                Err(error) => return HttpResponse::InternalServerError().json(error.to_string()),
+            };
+        } else {
+            return HttpResponse::NotFound().json("gender not found");
+        }
+    } else {
+        return HttpResponse::NotFound().json("gender not found");
     }
 }
 
@@ -66,6 +91,7 @@ async fn delete_gender_by_id(
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_gender)
+        .service(update_gender)
         .service(get_genders)
         .service(get_gender_by_id)
         .service(delete_gender_by_id);
