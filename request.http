@@ -1,7 +1,7 @@
 /// *************************Board*************************
 
 ### postboard
-POST http://localhost:8080/api/board/1
+POST http://localhost:8080/api/board
 Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
@@ -25,6 +25,7 @@ Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4M
 
 ### postcategory
 POST http://localhost:8080/api/category
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {
@@ -145,13 +146,14 @@ GET http://localhost:8080/api/mother_occupation/1
 // ********************Pesonal*************************
 ### postpersonal
 POST http://localhost:8080/api/personal
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {
-  "firstname": "Nabin",
+  "firstname": "Ashutosh",
   "lastname": "Karki",
-  "email": "nabin@karki.com",
-  "phone": "9876543210",
+  "email": "test@karki.com",
+  "phone": "9876544210",
   "dob": "2018-01-01",
   "gender_id": 1,
   "category_id": 1,
@@ -192,6 +194,7 @@ GET http://localhost:8080/api/pg/1
 
 ### postqualification
 POST http://localhost:8080/api/qualification
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {
@@ -208,6 +211,7 @@ GET http://localhost:8080/api/qualification/1
 
 ### postspecialization
 POST http://localhost:8080/api/specialization
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {
@@ -224,17 +228,19 @@ GET http://localhost:8080/api/specialization/1
 
 ### poststudent
 POST http://localhost:8080/api/student
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 Content-Type: application/json
 
 {
-  "id": "12343",
-  "personal_id": 1,
-  "family_id": 1,
+  "id": "12342",
+  "personal_id": 6,
+  "family_id": 2,
   "pg_id": null
 }
 
 ### getcategories
 GET http://localhost:8080/api/student
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 
 ### getstudentbyId
 GET http://localhost:8080/api/student/12345
@@ -257,4 +263,38 @@ Content-Type: application/json
 {
   "email": "test@test.com",
   "password": "test"
+}
+// ******************** filter *************************
+### filter 
+POST http://localhost:8080/api/filter
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
+Content-Type: application/json
+
+{
+    "id": "",
+    "pg_id": null,
+    "firstname": "",
+    "lastname": "",
+    "email": "",
+    "phone": "",
+    "father_name": "",
+    "mother_name": "",
+    "city": "",
+    "state": "",
+    "zip": "",
+    "tenth_year": [],
+    "tenth_percentage": 0,
+    "twelfth_year": [],
+    "twelfth_percentage": 0,
+    "ug_startyear": [],
+    "ug_endyear": [],
+    "ug_cgpa": 0,
+    "father_occupation_id": [],
+    "mother_occupation_id": [],
+    "gender": [1],
+    "category": [],
+    "ug_qualification_id": [],
+    "ug_specialization_id": [],
+    "tenth_board_id": [],
+    "twelfth_board_id": []
 }

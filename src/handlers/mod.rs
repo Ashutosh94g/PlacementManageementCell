@@ -5,6 +5,7 @@ pub mod category;
 pub mod config;
 pub mod family;
 pub mod father_occupation;
+pub mod filter;
 pub mod gender;
 pub mod mother_occupation;
 pub mod personal;

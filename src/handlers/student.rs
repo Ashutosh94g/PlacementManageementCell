@@ -65,7 +65,7 @@ async fn update_student(
 }
 
 #[derive(Debug, Deserialize, Serialize, PartialEq, FromQueryResult)]
-struct CStudent {
+pub struct CStudent {
     pub id: String,
     // pub personal_id: i32,
     // pub family_id: i32,
