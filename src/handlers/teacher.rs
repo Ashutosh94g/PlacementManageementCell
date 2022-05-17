@@ -28,8 +28,8 @@ async fn post_teacher(
     let token = create_jwt(info.email.to_owned());
 
     match result {
-        Ok(_) => Either::Left(HttpResponse::Ok().json(token)),
-        Err(error) => Either::Right(HttpResponse::InternalServerError().json(error.to_string())),
+        Ok(_) => Either::Left(HttpResponse::Created().json(token)),
+        Err(error) => Either::Right(HttpResponse::Conflict().json(error.to_string())),
     }
 }
 
@@ -59,9 +59,9 @@ async fn change_password(
                 teacher_model.password = Set(new_password);
                 let result = teacher_model.update(db_connection).await;
                 match result {
-                    Ok(model) => return HttpResponse::Ok().json(model.email.to_owned()),
+                    Ok(model) => return HttpResponse::NoContent().json(model.email.to_owned()),
                     Err(error) => {
-                        return HttpResponse::InternalServerError().json(error.to_string())
+                        return HttpResponse::Conflict().json(error.to_string())
                     }
                 };
             } else {
@@ -99,7 +99,7 @@ async fn change_email(info: web::Json<ChangeEmail>, state: web::Data<AppState>) 
                 match result {
                     Ok(model) => return HttpResponse::Ok().json(model.email.to_owned()),
                     Err(error) => {
-                        return HttpResponse::InternalServerError().json(error.to_string())
+                        return HttpResponse::Conflict().json(error.to_string())
                     }
                 };
             } else {

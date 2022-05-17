@@ -1,7 +1,7 @@
 use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 use entity::entity::prelude::Family;
 use entity::sea_orm::ActiveValue::NotSet;
-use entity::sea_orm::{ActiveModelTrait, EntityTrait};
+use entity::sea_orm::{ActiveModelTrait, EntityTrait, QuerySelect};
 use entity::{entity::family, sea_orm::Set};
 
 use crate::AppState;
@@ -32,8 +32,8 @@ async fn post_family(info: web::Json<family::Model>, state: web::Data<AppState>)
         .await;
 
     match result {
-        Ok(model) => Either::Left(HttpResponse::Ok().json(model)),
-        Err(error) => Either::Right(HttpResponse::InternalServerError().json(error.to_string())),
+        Ok(model) => Either::Left(HttpResponse::Created().json(model)),
+        Err(error) => Either::Right(HttpResponse::Conflict().json(error.to_string())),
     }
 }
 
@@ -64,14 +64,49 @@ async fn update_family(
             family_model.twelfth_board_id = Set(info.twelfth_board_id.to_owned());
             let result = family_model.update(db_connection).await;
             match result {
-                Ok(model) => return HttpResponse::Ok().json(model),
-                Err(error) => return HttpResponse::InternalServerError().json(error.to_string()),
+                Ok(model) => return HttpResponse::NoContent().json(model),
+                Err(error) => return HttpResponse::Conflict().json(error.to_string()),
             };
         } else {
             return HttpResponse::NotFound().json("family not found");
         }
     } else {
         return HttpResponse::NotFound().json("family not found");
+    }
+}
+
+#[get("/tenth_year")]
+async fn get_distinct_tenth_years(state: web::Data<AppState>) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let tenth_years = 
+    Family::find().select_only()
+        .column(family::Column::TenthYear)
+        .group_by(family::Column::TenthYear)
+        .into_json()
+        .all(db_connection)
+        .await;
+
+    match tenth_years {
+        Ok(years) => return HttpResponse::Ok().json(years),
+        Err(error) => return HttpResponse::BadRequest().json(error.to_string()),
+    }
+}
+
+#[get("/twelfth_year")]
+async fn get_distinct_twelfth_years(state: web::Data<AppState>) -> impl Responder {
+    let db_connection = &state.db_connection;
+    let twelfth_years = 
+    Family::find()
+        .select_only()
+        .column(family::Column::TwelfthYear)
+        .group_by(family::Column::TwelfthYear)
+        .into_json()
+        .all(db_connection)
+        .await;
+
+    match twelfth_years {
+        Ok(years) => return HttpResponse::Ok().json(years),
+        Err(error) => return HttpResponse::BadRequest().json(error.to_string()),
     }
 }
 
@@ -118,6 +153,8 @@ async fn delete_family_by_id(
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_family)
         .service(update_family)
+        .service(get_distinct_tenth_years)
+        .service(get_distinct_twelfth_years)
         .service(get_familys)
         .service(get_family_by_id)
         .service(delete_family_by_id);

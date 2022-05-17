@@ -19,8 +19,8 @@ async fn post_gender(info: web::Json<gender::Model>, state: web::Data<AppState>)
         .await;
 
     match result {
-        Ok(model) => Either::Left(HttpResponse::Ok().json(model)),
-        Err(error) => Either::Right(HttpResponse::InternalServerError().json(error.to_string())),
+        Ok(model) => Either::Left(HttpResponse::Created().json(model)),
+        Err(error) => Either::Right(HttpResponse::Conflict().json(error.to_string())),
     }
 }
 
@@ -38,8 +38,8 @@ async fn update_gender(
             gender_model.value = Set(info.value.to_owned());
             let result = gender_model.update(db_connection).await;
             match result {
-                Ok(model) => return HttpResponse::Ok().json(model),
-                Err(error) => return HttpResponse::InternalServerError().json(error.to_string()),
+                Ok(model) => return HttpResponse::NoContent().json(model),
+                Err(error) => return HttpResponse::Conflict().json(error.to_string()),
             };
         } else {
             return HttpResponse::NotFound().json("gender not found");

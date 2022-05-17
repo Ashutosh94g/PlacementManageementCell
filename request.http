@@ -14,7 +14,17 @@ GET http://localhost:8080/api/board
 Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 
 ### getboardByID
-GET http://localhost:8080/api/board/1
+GET http://localhost:8080/api/board/5
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
+
+### updateboardbyId
+POST http://localhost:8080/api/board/5
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
+Content-Type: application/json
+
+{
+  "value": "J and K Board"
+}
 
 ### deletebyid
 DELETE http://localhost:8080/api/board/1
@@ -243,7 +253,8 @@ GET http://localhost:8080/api/student
 Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 
 ### getstudentbyId
-GET http://localhost:8080/api/student/12345
+GET http://localhost:8080/api/student/1238
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
 
 
 // ******************** register *************************
@@ -262,7 +273,7 @@ Content-Type: application/json
 
 {
   "email": "test@test.com",
-  "password": "test"
+  "password": "asdf"
 }
 // ******************** filter *************************
 ### filter 
@@ -298,3 +309,7 @@ Content-Type: application/json
     "tenth_board_id": [],
     "twelfth_board_id": []
 }
+// **********************distinct tenth years*******************
+### distinct tenth years
+GET http://localhost:8080/api/tenth_year
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU

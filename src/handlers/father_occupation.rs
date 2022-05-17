@@ -22,8 +22,8 @@ async fn post_father_occupation(
         .await;
 
     match result {
-        Ok(model) => Either::Left(HttpResponse::Ok().json(model)),
-        Err(error) => Either::Right(HttpResponse::InternalServerError().json(error.to_string())),
+        Ok(model) => Either::Left(HttpResponse::Created().json(model)),
+        Err(error) => Either::Right(HttpResponse::Conflict().json(error.to_string())),
     }
 }
 
@@ -44,8 +44,8 @@ async fn update_father_occupation(
             father_occupation_model.value = Set(info.value.to_owned());
             let result = father_occupation_model.update(db_connection).await;
             match result {
-                Ok(model) => return HttpResponse::Ok().json(model),
-                Err(error) => return HttpResponse::InternalServerError().json(error.to_string()),
+                Ok(model) => return HttpResponse::NoContent().json(model),
+                Err(error) => return HttpResponse::Conflict().json(error.to_string()),
             };
         } else {
             return HttpResponse::NotFound().json("father_occupation not found");

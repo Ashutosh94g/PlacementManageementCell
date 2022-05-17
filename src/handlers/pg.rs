@@ -23,8 +23,8 @@ async fn post_pg(info: web::Json<pg::Model>, state: web::Data<AppState>) -> impl
         .await;
 
     match result {
-        Ok(model) => Either::Left(HttpResponse::Ok().json(model)),
-        Err(error) => Either::Right(HttpResponse::InternalServerError().json(error.to_string())),
+        Ok(model) => Either::Left(HttpResponse::Created().json(model)),
+        Err(error) => Either::Right(HttpResponse::Conflict().json(error.to_string())),
     }
 }
 
@@ -46,8 +46,8 @@ async fn update_pg(
             pg_model.cgpa = Set(info.cgpa.to_owned());
             let result = pg_model.update(db_connection).await;
             match result {
-                Ok(model) => return HttpResponse::Ok().json(model),
-                Err(error) => return HttpResponse::InternalServerError().json(error.to_string()),
+                Ok(model) => return HttpResponse::NoContent().json(model),
+                Err(error) => return HttpResponse::Conflict().json(error.to_string()),
             };
         } else {
             return HttpResponse::NotFound().json("pg not found");

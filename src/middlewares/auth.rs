@@ -65,6 +65,17 @@ where
         let mut token_verified = false;
         if req.uri().path() == "/api/register" && req.method() == "POST"
             || req.uri().path() == "/api/login" && req.method() == "POST"
+            || req.uri().path() == "/api/board" && req.method() == "GET"
+            || req.uri().path() == "/api/category" && req.method() == "GET"
+            || req.uri().path() == "/api/father_occupation" && req.method() == "GET"
+            || req.uri().path() == "/api/mother_occupation" && req.method() == "GET"
+            || req.uri().path() == "/api/gender" && req.method() == "GET"
+            || req.uri().path() == "/api/qualification" && req.method() == "GET"
+            || req.uri().path() == "/api/specialization" && req.method() == "GET"
+            || req.uri().path() == "/api/personal" && req.method() == "POST"
+            || req.uri().path() == "/api/family" && req.method() == "POST"
+            || req.uri().path() == "/api/pg" && req.method() == "POST"
+            || req.uri().path() == "/api/student" && req.method() == "POST"
         {
             token_verified = true;
         }
