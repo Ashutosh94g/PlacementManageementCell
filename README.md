@@ -9,3 +9,5 @@ To Run the Frontend
 1. cd client
 2. npm install
 3. npm run dev for developement or npm build and npm serve for production
+
+Checkout readme file inside migrations folder to setup Mysql and define mysql username and password in .env file
