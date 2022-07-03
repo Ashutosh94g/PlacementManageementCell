@@ -169,6 +169,7 @@ impl MigrationTrait for Migration {
             PersonalId,
             FamilyId,
             PgId,
+            Password
         }
 
         manager
@@ -185,6 +186,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Student::PersonalId).integer().not_null())
                     .col(ColumnDef::new(Student::FamilyId).integer().not_null())
                     .col(ColumnDef::new(Student::PgId).integer())
+                    .col(ColumnDef::new(Student::Password).string().not_null())
                     .to_owned(),
             )
             .await?;

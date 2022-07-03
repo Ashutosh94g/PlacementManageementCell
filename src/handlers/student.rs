@@ -2,7 +2,7 @@ use actix_web::{delete, get, post, web, Either, HttpResponse, Responder};
 
 use entity::sea_orm::prelude::ChronoDate;
 use entity::sea_orm::{
-    self, ActiveModelTrait, EntityTrait, FromQueryResult, QuerySelect, RelationTrait,
+    self, ActiveModelTrait, EntityTrait, FromQueryResult, QuerySelect, RelationTrait, QueryFilter, ColumnTrait,
 };
 use entity::{
     entity::{prelude::*, *},
@@ -11,6 +11,7 @@ use entity::{
 use serde::{Deserialize, Serialize};
 
 use crate::AppState;
+use crate::utils::{create_hash, create_jwt, compare_hash};
 
 #[post("/student")]
 async fn post_student(
@@ -18,19 +19,23 @@ async fn post_student(
     state: web::Data<AppState>,
 ) -> impl Responder {
     let db_connection = &state.db_connection;
+    let hashed_password = create_hash(info.password.to_owned());
     let student_model = student::ActiveModel {
         id: Set(info.id.to_owned()),
         personal_id: Set(info.personal_id.to_owned()),
         family_id: Set(info.family_id.to_owned()),
         pg_id: Set(info.pg_id.to_owned()),
+        password: Set(hashed_password),
     };
 
     let result = Student::insert(student_model)
         .exec_with_returning(db_connection)
         .await;
 
+    let token = create_jwt(info.id.to_owned());
+
     match result {
-        Ok(model) => Either::Left(HttpResponse::Created().json(model)),
+        Ok(_model) => Either::Left(HttpResponse::Created().json(token)),
         Err(error) => Either::Right(HttpResponse::Conflict().json(error.to_string())),
     }
 }
@@ -234,10 +239,39 @@ async fn delete_student_by_id(
     }
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+struct StudentLogin{
+    id: String,
+    password: String
+}
+
+#[post("/student/login")]
+async fn student_login(info: web::Json<StudentLogin>, state: web::Data<AppState>) -> impl Responder {
+    println!("This login is running");
+    let db_connection = &state.db_connection;
+    let studentlogin = Student::find()
+        .filter(student::Column::Id.eq(info.id.to_owned()))
+        .one(db_connection)
+        .await;
+
+    let student = studentlogin
+        .unwrap()
+        .expect("Failed due to error in unwraping model");
+
+    let token = create_jwt(info.id.to_owned());
+
+    if compare_hash(student.password.to_owned(), info.password.to_owned()) {
+        return HttpResponse::Ok().json(token);
+    }
+
+    return HttpResponse::Unauthorized().json("Unauthorized");
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(post_student)
         .service(update_student)
         .service(get_students)
         .service(get_student_by_id)
-        .service(delete_student_by_id);
+        .service(delete_student_by_id)
+        .service(student_login);
 }

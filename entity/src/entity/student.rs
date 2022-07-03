@@ -11,6 +11,7 @@ pub struct Model {
     pub personal_id: i32,
     pub family_id: i32,
     pub pg_id: Option<i32>,
+    pub password: String,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

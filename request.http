@@ -66,10 +66,10 @@ Content-Type: application/json
   "zip": "444444",
   "tenth_year": 2016,
   "tenth_percentage": 88.88,
-  "tenth_board_id": 2,
+  "tenth_board_id": 1,
   "twelfth_year": 2018,
   "twelfth_percentage": 74.6,
-  "twelfth_board_id": 2
+  "twelfth_board_id": 1
 }
 
 ### updatefamily
@@ -242,10 +242,11 @@ Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4M
 Content-Type: application/json
 
 {
-  "id": "12342",
-  "personal_id": 6,
+  "id": "12345",
+  "personal_id": 2,
   "family_id": 2,
-  "pg_id": null
+  "pg_id": null,
+  "password": "bird"
 }
 
 ### getcategories
@@ -272,8 +273,8 @@ POST http://localhost:8080/api/login
 Content-Type: application/json
 
 {
-  "email": "test@test.com",
-  "password": "asdf"
+  "email": "test3@test.com",
+  "password": "Placement@1"
 }
 // ******************** filter *************************
 ### filter 
@@ -313,3 +314,13 @@ Content-Type: application/json
 ### distinct tenth years
 GET http://localhost:8080/api/tenth_year
 Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
+
+###
+POST http://localhost:8080/api/student/login
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTQxODM4MTMsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.Bl2TtpPz_SnL_mVU-xasy_Jqt_dHUTX6GN3-k-KrbqU
+Content-Type: "application/json"
+
+{
+  "id": "12345",
+  "password": "bird"
+}
